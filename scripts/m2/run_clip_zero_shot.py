@@ -18,6 +18,7 @@ MANIFEST_PATH = ROOT / "artifacts/m1/garment_manifest.csv"
 OUTPUT_DIR = ROOT / "artifacts/m2/clip_zero_shot"
 
 MODEL_ID = "openai/clip-vit-base-patch32"
+CLIP_MODEL_REVISION = "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268"
 
 REQUIRED_COLUMNS = {
     "item_id",
@@ -78,8 +79,12 @@ def main() -> None:
         )
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    processor = CLIPProcessor.from_pretrained(MODEL_ID)
-    model = CLIPModel.from_pretrained(MODEL_ID).to(device)
+    processor = CLIPProcessor.from_pretrained(
+        MODEL_ID, revision=CLIP_MODEL_REVISION
+    )
+    model = CLIPModel.from_pretrained(
+        MODEL_ID, revision=CLIP_MODEL_REVISION
+    ).to(device)
     model.eval()
 
     text_inputs = processor(
@@ -194,7 +199,7 @@ def main() -> None:
         "taxonomy_version": taxonomy["taxonomy_version"],
         "taxonomy_status": taxonomy["status"],
         "model_id": MODEL_ID,
-        "model_revision": None,
+        "model_revision": CLIP_MODEL_REVISION,
         "experiment": "zero_shot_clip",
         "candidate_categories": category_names,
         "item_count": len(results),
@@ -217,7 +222,7 @@ def main() -> None:
             "Small sample; metrics are not final evaluation results.",
             "Fashionpedia crops from the same source image may be correlated.",
             "Source-image grouping and independence have not been enforced.",
-            "Model revision is not pinned or recorded.",
+            "Small-sample results; broader evaluation is still required.",
             "No prompt tuning or training was performed.",
         ],
         "source_counts": {
