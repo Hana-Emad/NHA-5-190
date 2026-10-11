@@ -79,12 +79,8 @@ def main() -> None:
         )
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    processor = CLIPProcessor.from_pretrained(
-        MODEL_ID, revision=CLIP_MODEL_REVISION
-    )
-    model = CLIPModel.from_pretrained(
-        MODEL_ID, revision=CLIP_MODEL_REVISION
-    ).to(device)
+    processor = CLIPProcessor.from_pretrained(MODEL_ID, revision=CLIP_MODEL_REVISION)
+    model = CLIPModel.from_pretrained(MODEL_ID, revision=CLIP_MODEL_REVISION).to(device)
     model.eval()
 
     text_inputs = processor(
