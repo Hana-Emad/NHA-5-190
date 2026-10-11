@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
+import subprocess
 from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -12,17 +15,11 @@ import pandas as pd
 from numpy.typing import NDArray
 
 CLIP_MODEL_ID = "openai/clip-vit-base-patch32"
-CLIP_MODEL_REVISION: str | None = None
+CLIP_MODEL_REVISION = "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268"
 CLIP_EMBEDDING_VERSION = "wardiq.clip_embedding.v1"
 EXPECTED_EMBEDDING_DIMENSION = 512
 
-REQUIRED_MANIFEST_COLUMNS = (
-    "item_id",
-    "source_dataset",
-    "image_path",
-    "target_split",
-    "usable_derivative",
-)
+REQUIRED_MANIFEST_COLUMNS = ("item_id", "source_dataset")
 
 
 @dataclass(frozen=True)
@@ -56,9 +53,19 @@ def load_usable_manifest(
     if missing_columns:
         raise ValueError(f"Manifest is missing required columns: {missing_columns}")
 
-    usable = manifest[
-        manifest["usable_derivative"].astype(str).str.strip().str.lower().eq("true")
-    ].copy()
+    if {"image_path", "target_split", "usable_derivative"}.issubset(manifest.columns):
+        usable = manifest[
+            manifest["usable_derivative"].astype(str).str.strip().str.lower().eq("true")
+        ].copy()
+
+    elif {"output_path", "source_target_split", "crop_method"}.issubset(manifest.columns):
+        usable = manifest[manifest["crop_method"].ne("skipped_not_a_garment")].copy()
+        usable["image_path"] = usable["output_path"]
+        usable["target_split"] = usable["source_target_split"]
+        usable["usable_derivative"] = True
+
+    else:
+        raise ValueError("Manifest must use either the derivative or garment manifest format.")
 
     if usable.empty:
         raise ValueError("Manifest contains no usable image derivatives.")
@@ -74,7 +81,7 @@ def load_usable_manifest(
         raise ValueError("Usable manifest rows contain missing image paths.")
 
     root = Path(image_root) if image_root is not None else Path.cwd()
-    resolved_paths: list[str] = []
+    resolved_paths = []
 
     for raw_path in usable["image_path"]:
         path = Path(str(raw_path))
@@ -151,6 +158,29 @@ def validate_embedding_artifact(
 
         if not np.allclose(norms, 1.0, atol=1e-4):
             raise ValueError("Expected all normalized embedding vectors to have unit norm.")
+
+
+def validate_embedding_inventory(
+    inventory: pd.DataFrame,
+    item_count: int,
+) -> None:
+    """Validate inventory rows and their alignment with embedding vectors."""
+    if len(inventory) != item_count:
+        raise ValueError(f"Expected {item_count} inventory rows; received {len(inventory)}.")
+
+    required_columns = {"item_id", "embedding_row_index"}
+    missing_columns = required_columns - set(inventory.columns)
+    if missing_columns:
+        raise ValueError(f"Inventory is missing required columns: {sorted(missing_columns)}")
+
+    if inventory["item_id"].isna().any() or inventory["item_id"].duplicated().any():
+        raise ValueError("Inventory item IDs must be present and unique.")
+
+    expected_rows = np.arange(item_count)
+    actual_rows = inventory["embedding_row_index"].to_numpy()
+
+    if not np.array_equal(actual_rows, expected_rows):
+        raise ValueError("Inventory row indices must match embedding vector order.")
 
 
 def extract_clip_embeddings(
@@ -244,8 +274,25 @@ def extract_clip_embeddings(
     inventory = manifest.copy()
     inventory.insert(
         0,
-        "embedding_row",
+        "embedding_row_index",
         np.arange(len(inventory), dtype=np.int64),
+    )
+
+    review_items = {
+        "fashionpedia_val_ann_005699",
+        "fashionpedia_val_ann_005700",
+    }
+    inventory["needs_visual_review"] = inventory["item_id"].isin(review_items)
+
+    inventory["scope"] = np.where(
+        inventory["source_dataset"].eq("fashion_mnist"),
+        "smoke_test",
+        "garment_evaluation",
+    )
+
+    validate_embedding_inventory(
+        inventory=inventory,
+        item_count=len(embeddings),
     )
 
     image_processor = getattr(processor, "image_processor", None)
@@ -254,13 +301,25 @@ def extract_clip_embeddings(
     metadata_record = asdict(metadata)
     metadata_record.update(
         {
+            "model_name": "clip_vit_b32_v0",
             "model_revision": (CLIP_MODEL_REVISION or getattr(model.config, "_commit_hash", None)),
             "processor_size": processor_size,
             "item_count": len(manifest),
             "source_manifest": str(Path(manifest_path)),
+            "manifest_sha256": hashlib.sha256(Path(manifest_path).read_bytes()).hexdigest(),
+            "preprocessing": "CLIPProcessor from the recorded model revision",
+            "normalization": "L2",
+            "provisional_dimension": True,
             "embedding_file": embedding_path.name,
             "inventory_file": inventory_path.name,
             "prototype_only": True,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "git_commit": subprocess.run(
+                ["git", "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
+                text=True,
+            ).stdout.strip(),
         }
     )
 
