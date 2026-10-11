@@ -37,3 +37,4 @@ temp/
 
 .local-check-tools/
 data/derived/
+data/embeddings/

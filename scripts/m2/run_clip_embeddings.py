@@ -1,4 +1,3 @@
-
 """Extract versioned CLIP embeddings for WARDIQ M2."""
 
 from __future__ import annotations
@@ -10,7 +9,7 @@ from wardiq.representation.clip_embeddings import extract_clip_embeddings
 
 ROOT = Path(__file__).resolve().parents[2]
 MANIFEST_PATH = ROOT / "data/manifests/garment_manifest.csv"
-OUTPUT_DIR = ROOT / "data/embeddings/clip"
+OUTPUT_DIR = ROOT / "artifacts/m2/clip_embeddings_prototype"
 
 
 def main() -> None:

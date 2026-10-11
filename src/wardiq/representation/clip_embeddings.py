@@ -264,7 +264,7 @@ def extract_clip_embeddings(
         item_count=len(manifest),
     )
 
-    output_dir = Path(output_dir) / "v1"
+    output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     embedding_path = output_dir / "clip_embeddings.npy"
