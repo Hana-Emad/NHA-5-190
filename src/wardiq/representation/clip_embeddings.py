@@ -15,7 +15,7 @@ import pandas as pd
 from numpy.typing import NDArray
 
 CLIP_MODEL_ID = "openai/clip-vit-base-patch32"
-CLIP_MODEL_REVISION: str | None = None
+CLIP_MODEL_REVISION = "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268"
 CLIP_EMBEDDING_VERSION = "wardiq.clip_embedding.v1"
 EXPECTED_EMBEDDING_DIMENSION = 512
 
