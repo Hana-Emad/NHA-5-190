@@ -1,0 +1,16 @@
+# Quick end-to-end CHECK on a laptop CPU (VS Code). Small images and a small subset: proves the pipeline runs, NOT a result.
+# Do not put these numbers in the report; the reported run is resnet50_baseline_fmnist.yaml on a GPU.
+classification_manifest: data/manifests/classification_manifest_fmnist.csv
+image_root: .
+output_dir: artifacts/m2/cpu_check
+seed: 42
+image_size: 64
+batch_size: 64
+num_workers: 0
+max_items_per_split: 1000
+unfreeze: []
+lr_head: 0.001
+epochs: 2
+patience: 2
+weight_decay: 0.0001
+check_image_coverage: false

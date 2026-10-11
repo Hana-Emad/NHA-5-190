@@ -1,0 +1,16 @@
+# Bounded fine-tuning on Fashion-MNIST (same split), starting from the unchanged Fashion-MNIST baseline.
+classification_manifest: data/manifests/classification_manifest_fmnist.csv
+image_root: .
+output_dir: artifacts/m2/resnet50_finetune_fmnist
+init_checkpoint: artifacts/m2/resnet50_baseline_fmnist/checkpoint.pt
+seed: 42
+image_size: 224
+batch_size: 64
+num_workers: 2
+unfreeze: [layer4]
+lr_head: 0.0003
+lr_backbone: 0.00003
+epochs: 4
+patience: 2
+weight_decay: 0.0001
+check_image_coverage: false
