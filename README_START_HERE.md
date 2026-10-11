@@ -55,3 +55,14 @@ Run on Fashion-MNIST with the M1 split unchanged (train 54,000 / validation 6,00
 
 ## Known limitations
 One seed, no variance estimate; both runs ended at their epoch cap while still improving; the fine-tune had extra training epochs; Fashion-MNIST only; only 50 misclassified examples were viewed (the most confident mistakes), so causes of errors and label-noise rates are not established. Details in `docs/m2/resnet_category.md`.
+
+Model Checkpoints
+
+The trained M2 checkpoints are stored separately from this Git repository.
+
+* Google Drive: [https://drive.google.com/drive/folders/1GIZIXv6dueHUKX-El0MfkDdDga_veFYt?usp=sharing]
+* Files: ResNet-50 baseline and fine-tuned checkpoints (.pt)
+* Access: Team members must have permission to access the shared folder.
+* Usage: Download the required checkpoint and follow the M2 configuration and documentation for loading and evaluation.
+
+The checkpoints are not included in the Git repository to keep it lightweight.
