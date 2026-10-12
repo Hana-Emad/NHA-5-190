@@ -30,7 +30,7 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - name: Install development dependencies
-        run: python -m pip install -e ".[dev,data,ml]"
+        run: python -m pip install -e ".[dev,data,ml,color]"
       - name: Lint shared code
         run: python scripts/tasks.py lint
       - name: Check shared-code formatting
@@ -41,6 +41,10 @@ jobs:
         run: python scripts/tasks.py test
       - name: Reproduce manifest-only clean handoff
         run: python scripts/tasks.py clean-manifest
+      - name: Verify canonical splits and test-only evaluation inventory
+        run: python scripts/tasks.py splits
+      - name: Verify taxonomy coverage
+        run: python scripts/tasks.py taxonomy
       - name: Check manifest reference duplication
         run: python scripts/tasks.py duplicates
       - name: Validate structure, manifest, and artifact policy
@@ -60,8 +64,14 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - name: Install data inspection dependencies
-        run: python -m pip install -e ".[data]"
+        run: python -m pip install -e ".[data,color]"
       - name: Decode independent source samples
         run: python scripts/tasks.py m1-images
       - name: Check sample traceability and dimensions
         run: python scripts/tasks.py samples
+      - name: Reproduce prototype garment crops
+        run: python scripts/tasks.py garments
+      - name: Extract and account for M2 sample palettes
+        run: python scripts/tasks.py colors
+      - name: Build and validate the provisional M2 attribute handoff
+        run: python scripts/tasks.py attributes

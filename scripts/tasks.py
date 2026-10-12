@@ -22,13 +22,22 @@ SCOPE = [
     "scripts/check_manifest_duplicates.py",
     "scripts/validate_m1_images.py",
     "scripts/inspect_m1_manifest.py",
+    "scripts/apply_taxonomy.py",
+    "scripts/prepare_garment_crops.py",
+    "scripts/extract_color_palettes.py",
+    "scripts/validate_m1_splits.py",
+    "scripts/m2",
+    "reports/m2/build_attribute_support.py",
+    "reports/m2/build_sample_prediction.py",
+    "reports/m2/build_supported_attribute_coverage.py",
+    "configs/m2/build_model_inference_config.py",
 ]
 
 
 def main() -> int:
     """Run one explicit quality command and preserve its exit status."""
     commands = {
-        "setup": ["-m", "pip", "install", "-e", ".[dev]"],
+        "setup": ["-m", "pip", "install", "-e", ".[dev,data,ml,color]"],
         "lint": ["-m", "ruff", "check", *SCOPE],
         "format": ["-m", "ruff", "format", *SCOPE],
         "format-check": ["-m", "ruff", "format", "--check", *SCOPE],
@@ -41,6 +50,11 @@ def main() -> int:
         "clean-manifest": ["scripts/prepare_clean_manifest.py"],
         "duplicates": ["scripts/check_manifest_duplicates.py"],
         "m1-images": ["scripts/validate_m1_images.py"],
+        "splits": ["scripts/validate_m1_splits.py"],
+        "taxonomy": ["scripts/apply_taxonomy.py"],
+        "colors": ["scripts/extract_color_palettes.py"],
+        "attributes": ["scripts/m2/run_attribute_handoff.py"],
+        "garments": ["scripts/prepare_garment_crops.py"],
         "m1-eda": ["scripts/inspect_m1_manifest.py"],
     }
     parser = argparse.ArgumentParser(description=__doc__)
