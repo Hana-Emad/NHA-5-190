@@ -40,7 +40,7 @@ python -m src.wardiq.clothing.resnet_category --config configs/m2/resnet50_finet
 python -m pytest tests/test_m2_resnet.py -q
 # optional laptop-CPU check (not a result): configs/m2/resnet50_baseline_fmnist_cpu_check.yaml
 ```
-Outputs under `artifacts/m2/<run>/`: `checkpoint.pt` (not committed), and the small result files that are committed: `class_to_idx.json`, `val_predictions.csv` (item-keyed), `val_metrics.json` (accuracy, macro-F1, per-class support/P/R/F1, cost, history), `val_confusion_matrix.csv`, `reload_check.json` (`image_coverage.csv` as well for Path B); `artifacts/m2/error_examples.csv` holds the error examples for both runs. Keep model weights out of Git (`*.pt` is git-ignored) and document where the checkpoint is stored.
+Outputs under `artifacts/m2/<run>/`: `checkpoint.pt` (not committed), and small result files (committed snapshots are under reports/m2/resnet/<run>/): `class_to_idx.json`, `val_predictions.csv` (item-keyed), `val_metrics.json` (accuracy, macro-F1, per-class support/P/R/F1, cost, history), `val_confusion_matrix.csv`, `reload_check.json` (`image_coverage.csv` as well for Path B); `reports/m2/resnet/error_examples.csv` holds the error examples for both runs. Keep model weights out of Git (`*.pt` is git-ignored) and document where the checkpoint is stored.
 
 ## Design decisions
 - Labels resolved **by source category id** via `map_category`, never by zipping `category_ids`/`category_labels`.
@@ -134,7 +134,7 @@ What the numbers show:
 - Error propagation: T-shirt/top, Shirt and Pullover all map to the common category `top`, so confusions among them do not change the common category. Shirt → Coat, Pullover → Coat, Coat → Dress and T-shirt/top → Dress do (`top`/`outerwear`/`one_piece`). In a pipeline that used this common taxonomy, those would change which outfit templates an item can fill. Fashion-MNIST is not used downstream, so this is illustrative.
 
 ### Error examples and inspection
-`artifacts/m2/error_examples.csv` lists, for each run's five largest confusions, the five most confident mistakes (item ID, labels, confidence, image reference). The selection rule is mechanical (highest confidence first). Contact sheets: `artifacts/m2/error_examples_baseline.png` and `error_examples_finetune.png` (50 images in total, enlarged 4×).
+`reports/m2/resnet/error_examples.csv` lists, for each run's five largest confusions, the five most confident mistakes (item ID, labels, confidence, image reference). The selection rule is mechanical (highest confidence first). Contact sheets: `reports/m2/resnet/error_examples_baseline.png` and `error_examples_finetune.png` (50 images in total, enlarged 4×).
 
 The 50 images were looked at once (a qualitative, subjective reading, not a labelling audit). Because these are the most *confident* mistakes, the sample is biased toward ambiguous or doubtful labels and says nothing about how common they are.
 - **Genuinely ambiguous classes.** Many images sit between two classes: plain long-sleeve tops are labelled Pullover but predicted Coat or Shirt; button-front long-sleeve tops labelled Shirt or Coat are predicted as the other; sleeveless long tops labelled T-shirt/top are predicted Dress.

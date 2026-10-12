@@ -28,9 +28,9 @@ predict_item(model, classes, Image.open("some_image.png"), size, item_id="exampl
 | `tests/test_m2_resnet.py` | tests (3 passed, 1 skipped: needs torch) |
 | `docs/m2/resnet_category.md` | run guide, decisions, run record, results, error analysis, limitations |
 | `docs/m2/run_on_colab.ipynb` | step-by-step Colab notebook that reproduces the runs |
-| `artifacts/m2/resnet50_baseline_fmnist/` | baseline results: metrics, item-keyed validation predictions, confusion matrix, class map, reload check |
-| `artifacts/m2/resnet50_finetune_fmnist/` | same for the bounded fine-tune |
-| `artifacts/m2/error_examples.csv`, `error_examples_*.png` | most confident mistakes for each run's five largest confusions, as a table and as contact sheets |
+| `reports/m2/resnet/resnet50_baseline_fmnist/` | baseline results: metrics, item-keyed validation predictions, confusion matrix, class map, reload check |
+| `reports/m2/resnet/resnet50_finetune_fmnist/` | same for the bounded fine-tune |
+| `reports/m2/resnet/error_examples.csv`, `error_examples_*.png` | most confident mistakes for each run's five largest confusions, as a table and as contact sheets |
 
 ## Results (validation, 6,000 items, seed 42, test not used)
 Run on Fashion-MNIST with the M1 split unchanged (train 54,000 / validation 6,000 / test 10,000). This is a **pipeline baseline**, not the garment classifier.
