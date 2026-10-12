@@ -1,0 +1,16 @@
+# Bounded fine-tuning: unfreeze layer4 only, start from the UNCHANGED baseline checkpoint.
+classification_manifest: data/manifests/classification_manifest.csv
+image_root: .                 # manifest refs are repo-relative (data/raw/...)
+output_dir: artifacts/m2/resnet50_finetune
+init_checkpoint: artifacts/m2/resnet50_baseline/checkpoint.pt
+seed: 42
+image_size: 224
+batch_size: 32
+num_workers: 2
+unfreeze: [layer4]
+lr_head: 0.0003
+lr_backbone: 0.00003          # 10x smaller than the head
+epochs: 8
+patience: 2
+weight_decay: 0.0001
+check_image_coverage: true

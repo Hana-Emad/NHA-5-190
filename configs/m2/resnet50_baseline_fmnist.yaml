@@ -1,0 +1,15 @@
+# Baseline on Fashion-MNIST using Omar's M1 split UNCHANGED (train 54,000 / validation 6,000 / test 10,000).
+# Pipeline baseline only: M1 selected Fashion-MNIST for basic pipeline checks, not for the final garment representation.
+classification_manifest: data/manifests/classification_manifest_fmnist.csv
+image_root: .
+output_dir: artifacts/m2/resnet50_baseline_fmnist
+seed: 42
+image_size: 224
+batch_size: 128
+num_workers: 2
+unfreeze: []
+lr_head: 0.001
+epochs: 5
+patience: 2
+weight_decay: 0.0001
+check_image_coverage: false    # images come from the official IDX files, not individual files

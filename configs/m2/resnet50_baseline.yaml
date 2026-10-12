@@ -1,0 +1,14 @@
+# Frozen-backbone baseline: only the new classification head is trained.
+classification_manifest: data/manifests/classification_manifest.csv
+image_root: .                 # manifest refs are repo-relative, e.g. data/raw/fashionpedia/val_test2020.zip::test/x.jpg
+output_dir: artifacts/m2/resnet50_baseline
+seed: 42
+image_size: 224
+batch_size: 64
+num_workers: 2
+unfreeze: []                  # frozen backbone
+lr_head: 0.001
+epochs: 15
+patience: 3                   # stop after 3 epochs without validation macro-F1 improvement
+weight_decay: 0.0001
+check_image_coverage: true
