@@ -1,6 +1,7 @@
 
 import csv
 from pathlib import Path
+
 from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parents[2]

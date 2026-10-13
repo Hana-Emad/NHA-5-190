@@ -4,7 +4,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_DIR = ROOT / "artifacts" / "m2" / "clip_embeddings_prototype"
 EMBEDDING_PATH = ARTIFACT_DIR / "clip_embeddings.npy"
@@ -73,7 +72,7 @@ def main():
     results = []
 
     for query_pos, query in real.iterrows():
-        query_row = int(query["embedding_row_index"])
+
         query_dataset = str(query["source_dataset"])
         query_group = str(query.get("leakage_group_id", ""))
 
