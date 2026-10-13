@@ -115,3 +115,15 @@ Share this decision record and the associated experiment references with Hana fo
 M2 has working prototype components and documented exploratory evidence. It has not yet demonstrated a fair, common-set comparison across all candidate approaches. The category-predictor selection remains open; CLIP is retained as the provisional visual-representation candidate pending validation.
 
 No test-set results were used to make these decisions.
+## 6. M2 Closure Status
+
+For the M2 handoff, carry forward CLIP ViT-B/32 as the provisional visual-representation candidate, not as a proven best model. Keep the fine-tuned ResNet-50 as the Fashion-MNIST classification baseline only.
+
+The following items are deferred and must not be presented as completed experiments:
+
+- Real-garment ResNet training and evaluation, pending an approved training-data strategy.
+- CLIP linear-probe evaluation, because no implementation or results were found in the searched project files.
+- Validated retrieval evaluation on an agreed eligible population.
+- Trained attribute prediction and empirical attribute metrics, because the current Fashionpedia data provides no training-supported labels.
+
+The team still needs to review the taxonomy and cross-dataset mapping, agree on eligible validation IDs and grouping, and confirm the final M3 choices. These decisions should be made without using the M1 test split for model selection.

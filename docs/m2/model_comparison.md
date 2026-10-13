@@ -84,3 +84,15 @@ Fine-tuning ResNet-50 improved results on Fashion-MNIST. CLIP zero-shot classifi
 No final winner is declared. Selecting a WARDIQ representation requires evaluation under comparable conditions and evidence that the representation supports the project's outfit compatibility and recommendation objectives.
 
 Report status: Preliminary M2 comparison; further evaluation required.
+## 9. M2 Closure Status
+
+The comparison is complete as a record of the experiments available in this milestone, but it does not establish a fair winner for real-garment category prediction.
+
+- **Fashion-MNIST classification:** The fine-tuned ResNet-50 is the stronger of the two tested ResNet configurations on the Fashion-MNIST validation split.
+- **Real-garment category prediction:** No final model selected. The CLIP zero-shot result is exploratory, based on 18 examples, and is not directly comparable to the Fashion-MNIST ResNet results.
+- **Real-garment ResNet training:** Deferred because the current M1 manifests do not provide an approved real-garment training split.
+- **CLIP linear probe:** Not run or verified; no quantitative result is claimed.
+- **Visual representation:** CLIP ViT-B/32 remains a provisional M3 integration candidate. Retrieval quality and suitability for outfit compatibility remain unvalidated.
+- **Attribute prediction:** The target and masking contract has been validated, but model training and empirical metrics remain blocked by the absence of Fashionpedia training data.
+
+These deferrals are explicit limitations, not successful experiments. No new split was created for this report, and the M1 test split remains untouched.
