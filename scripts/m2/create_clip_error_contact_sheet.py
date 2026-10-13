@@ -1,4 +1,3 @@
-
 import csv
 from pathlib import Path
 
@@ -23,11 +22,7 @@ cell_width = 380
 cell_height = 420
 rows = (len(errors) + columns - 1) // columns
 
-sheet = Image.new(
-    "RGB",
-    (columns * cell_width, rows * cell_height),
-    "white"
-)
+sheet = Image.new("RGB", (columns * cell_width, rows * cell_height), "white")
 draw = ImageDraw.Draw(sheet)
 
 for index, error in enumerate(errors):
@@ -36,11 +31,7 @@ for index, error in enumerate(errors):
     x = (index % columns) * cell_width
     y = (index // columns) * cell_height
 
-    draw.rectangle(
-        [x + 5, y + 5, x + cell_width - 5, y + cell_height - 5],
-        outline="gray",
-        width=2
-    )
+    draw.rectangle([x + 5, y + 5, x + cell_width - 5, y + cell_height - 5], outline="gray", width=2)
 
     if not item:
         draw.text((x + 15, y + 15), "Manifest record not found", fill="red")

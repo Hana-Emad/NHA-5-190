@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 import numpy as np
@@ -20,8 +19,7 @@ def main():
 
     if len(inventory) != len(embeddings):
         raise ValueError(
-            f"Inventory has {len(inventory)} rows but "
-            f"embeddings contain {len(embeddings)} rows."
+            f"Inventory has {len(inventory)} rows but embeddings contain {len(embeddings)} rows."
         )
 
     if "embedding_row_index" not in inventory.columns:
@@ -38,9 +36,7 @@ def main():
     actual_indices = inventory["embedding_row_index"].to_numpy()
 
     if not np.array_equal(actual_indices, expected_indices):
-        raise ValueError(
-            "Inventory rows are not aligned with embedding row indices."
-        )
+        raise ValueError("Inventory rows are not aligned with embedding row indices.")
 
     if inventory["item_id"].duplicated().any():
         raise ValueError("Duplicate item IDs found in inventory.")
@@ -59,10 +55,7 @@ def main():
 
     # Restrict this diagnostic to real-garment examples.
     # Fashion-MNIST items are smoke-test data, not real-garment evidence.
-    real_mask = (
-        inventory["source_dataset"].astype(str).str.lower()
-        != "fashion_mnist"
-    )
+    real_mask = inventory["source_dataset"].astype(str).str.lower() != "fashion_mnist"
     real = inventory.loc[real_mask].copy().reset_index(drop=True)
 
     real_rows = real["embedding_row_index"].to_numpy()
@@ -72,7 +65,6 @@ def main():
     results = []
 
     for query_pos, query in real.iterrows():
-
         query_dataset = str(query["source_dataset"])
         query_group = str(query.get("leakage_group_id", ""))
 
@@ -98,37 +90,37 @@ def main():
 
         candidates.sort(reverse=True)
 
-        for rank, (score, candidate_pos) in enumerate(
-            candidates[:TOP_K], start=1
-        ):
+        for rank, (score, candidate_pos) in enumerate(candidates[:TOP_K], start=1):
             candidate = real.iloc[candidate_pos]
 
-            results.append({
-                "query_item_id": query["item_id"],
-                "query_dataset": query_dataset,
-                "query_category": query.get("category_label", ""),
-                "query_source_group": query_group,
-                "neighbor_rank": rank,
-                "neighbor_item_id": candidate["item_id"],
-                "neighbor_dataset": candidate["source_dataset"],
-                "neighbor_category": candidate.get("category_label", ""),
-                "neighbor_source_group": candidate.get(
-                    "leakage_group_id", ""
-                ),
-                "cosine_similarity": score,
-                "same_raw_category_label": (
-                    str(query.get("category_label", ""))
-                    == str(candidate.get("category_label", ""))
-                ),
-            })
+            results.append(
+                {
+                    "query_item_id": query["item_id"],
+                    "query_dataset": query_dataset,
+                    "query_category": query.get("category_label", ""),
+                    "query_source_group": query_group,
+                    "neighbor_rank": rank,
+                    "neighbor_item_id": candidate["item_id"],
+                    "neighbor_dataset": candidate["source_dataset"],
+                    "neighbor_category": candidate.get("category_label", ""),
+                    "neighbor_source_group": candidate.get("leakage_group_id", ""),
+                    "cosine_similarity": score,
+                    "same_raw_category_label": (
+                        str(query.get("category_label", ""))
+                        == str(candidate.get("category_label", ""))
+                    ),
+                }
+            )
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(results).to_csv(OUTPUT_PATH, index=False)
 
     print(f"Total embedding items: {len(embeddings)}")
     print(f"Real-garment items: {len(real)}")
-    print(f"Queries with at least one eligible neighbor: "
-          f"{len(set(r['query_item_id'] for r in results))}")
+    print(
+        f"Queries with at least one eligible neighbor: "
+        f"{len(set(r['query_item_id'] for r in results))}"
+    )
     print(f"Neighbor rows written: {len(results)}")
     print(f"Output: {OUTPUT_PATH}")
     print(
