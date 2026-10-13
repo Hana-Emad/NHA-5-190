@@ -1,0 +1,55 @@
+query_item_id,query_dataset,query_category,query_source_group,neighbor_rank,neighbor_item_id,neighbor_dataset,neighbor_category,neighbor_source_group,cosine_similarity,same_raw_category_label
+fashionpedia_val_ann_008929,Fashionpedia,shoe,13297,1,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.8192316293716431,False
+fashionpedia_val_ann_008929,Fashionpedia,shoe,13297,2,fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,0.8169575929641724,False
+fashionpedia_val_ann_008929,Fashionpedia,shoe,13297,3,fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,0.7794594764709473,False
+fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,1,fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,0.8935079574584961,False
+fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,2,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.8710950016975403,False
+fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,3,fashionpedia_val_ann_005700,Fashionpedia,watch,9468,0.860571026802063,False
+fashionpedia_val_ann_008931,Fashionpedia,pants,13297,1,fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,0.8270036578178406,False
+fashionpedia_val_ann_008931,Fashionpedia,pants,13297,2,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.8229534029960632,False
+fashionpedia_val_ann_008931,Fashionpedia,pants,13297,3,fashionpedia_val_ann_005698,Fashionpedia,vest,9468,0.7680425047874451,False
+fashionpedia_val_ann_008932,Fashionpedia,belt,13297,1,fashionpedia_val_ann_005700,Fashionpedia,watch,9468,0.9105821251869202,False
+fashionpedia_val_ann_008932,Fashionpedia,belt,13297,2,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.8729547262191772,False
+fashionpedia_val_ann_008932,Fashionpedia,belt,13297,3,fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,0.8447598218917847,False
+fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,1,fashionpedia_val_ann_008932,Fashionpedia,belt,13297,0.8729547262191772,False
+fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,2,fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,0.8710950016975403,False
+fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,3,fashionpedia_val_ann_005700,Fashionpedia,watch,9468,0.8326727151870728,False
+fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,1,fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,0.8935079574584961,False
+fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,2,fashionpedia_val_ann_008932,Fashionpedia,belt,13297,0.8447598218917847,False
+fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,3,fashionpedia_val_ann_008929,Fashionpedia,shoe,13297,0.8169575929641724,False
+fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,1,fashionpedia_val_ann_008931,Fashionpedia,pants,13297,0.8270036578178406,False
+fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,2,fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,0.812496542930603,False
+fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,3,fashionpedia_val_ann_008929,Fashionpedia,shoe,13297,0.7794594764709473,False
+fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,1,fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,0.7653068900108337,False
+fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,2,fashionpedia_val_ann_008931,Fashionpedia,pants,13297,0.6892619729042053,False
+fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,3,fashionpedia_val_ann_008932,Fashionpedia,belt,13297,0.6856016516685486,False
+fashionpedia_val_ann_006415,Fashionpedia,"top, t-shirt, sweatshirt",10330,1,fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,0.6669458150863647,True
+fashionpedia_val_ann_006415,Fashionpedia,"top, t-shirt, sweatshirt",10330,2,fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,0.6352638602256775,False
+fashionpedia_val_ann_006415,Fashionpedia,"top, t-shirt, sweatshirt",10330,3,fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,0.552208423614502,False
+fashionpedia_val_ann_005698,Fashionpedia,vest,9468,1,fashionpedia_val_ann_002555,Fashionpedia,"top, t-shirt, sweatshirt",18074,0.787852942943573,False
+fashionpedia_val_ann_005698,Fashionpedia,vest,9468,2,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.7694306969642639,False
+fashionpedia_val_ann_005698,Fashionpedia,vest,9468,3,fashionpedia_val_ann_008931,Fashionpedia,pants,13297,0.7680425047874451,False
+fashionpedia_val_ann_005699,Fashionpedia,jacket,9468,1,fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,0.7299600839614868,False
+fashionpedia_val_ann_005699,Fashionpedia,jacket,9468,2,fashionpedia_val_ann_008931,Fashionpedia,pants,13297,0.692802906036377,False
+fashionpedia_val_ann_005699,Fashionpedia,jacket,9468,3,fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,0.6786409616470337,True
+fashionpedia_val_ann_005700,Fashionpedia,watch,9468,1,fashionpedia_val_ann_008932,Fashionpedia,belt,13297,0.9105821251869202,False
+fashionpedia_val_ann_005700,Fashionpedia,watch,9468,2,fashionpedia_val_ann_008930,Fashionpedia,shoe,13297,0.860571026802063,False
+fashionpedia_val_ann_005700,Fashionpedia,watch,9468,3,fashionpedia_val_ann_002554,Fashionpedia,glasses,18074,0.8326727151870728,False
+fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,1,fashionpedia_val_ann_002565,Fashionpedia,jacket,18074,0.7653068900108337,False
+fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,2,fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,0.7602443099021912,False
+fashionpedia_val_ann_002371,Fashionpedia,"top, t-shirt, sweatshirt",17856,3,fashionpedia_val_ann_005699,Fashionpedia,jacket,9468,0.7299600839614868,False
+114380093,polyvore_outfits,bags,223369815:1,1,156386331,polyvore_outfits,shoes,219832237:2,0.7477372288703918,False
+114380093,polyvore_outfits,bags,223369815:1,2,138007061,polyvore_outfits,shoes,212053035:2,0.7462519407272339,False
+114380093,polyvore_outfits,bags,223369815:1,3,50479717,polyvore_outfits,bottoms,152130081:4,0.7118564248085022,False
+156386331,polyvore_outfits,shoes,219832237:2,1,138007061,polyvore_outfits,shoes,212053035:2,0.859072208404541,True
+156386331,polyvore_outfits,shoes,219832237:2,2,114380093,polyvore_outfits,bags,223369815:1,0.7477372288703918,False
+156386331,polyvore_outfits,shoes,219832237:2,3,50479717,polyvore_outfits,bottoms,152130081:4,0.7303133010864258,False
+138007061,polyvore_outfits,shoes,212053035:2,1,156386331,polyvore_outfits,shoes,219832237:2,0.859072208404541,True
+138007061,polyvore_outfits,shoes,212053035:2,2,114380093,polyvore_outfits,bags,223369815:1,0.7462519407272339,False
+138007061,polyvore_outfits,shoes,212053035:2,3,50479717,polyvore_outfits,bottoms,152130081:4,0.712619423866272,False
+50479717,polyvore_outfits,bottoms,152130081:4,1,156386331,polyvore_outfits,shoes,219832237:2,0.7303133010864258,False
+50479717,polyvore_outfits,bottoms,152130081:4,2,138007061,polyvore_outfits,shoes,212053035:2,0.712619423866272,False
+50479717,polyvore_outfits,bottoms,152130081:4,3,114380093,polyvore_outfits,bags,223369815:1,0.7118564248085022,False
+213366441,polyvore_outfits,bags,224931182:1;225010218:1,1,156386331,polyvore_outfits,shoes,219832237:2,0.6398869752883911,False
+213366441,polyvore_outfits,bags,224931182:1;225010218:1,2,114380093,polyvore_outfits,bags,223369815:1,0.6354772448539734,True
+213366441,polyvore_outfits,bags,224931182:1;225010218:1,3,fashionpedia_val_ann_002557,Fashionpedia,"shirt, blouse",18074,0.5948042273521423,False

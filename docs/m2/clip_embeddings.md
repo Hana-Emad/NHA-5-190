@@ -1,230 +1,149 @@
-\# M2 CLIP Image Embeddings
+# M2 CLIP Image Embeddings
 
+## Purpose and status
 
+This document describes WARDIQ's CLIP image-embedding extraction component, implemented in `src/wardiq/representation/clip_embeddings.py`.
 
-\## Purpose and status
+**Status: prototype implemented and successfully executed; full M2 acceptance is not established.**
 
+The component generates normalized CLIP image embeddings and an inventory mapping each item to its embedding row. The successful prototype run verifies that the extraction path works on the current sample manifest. It does not establish full accepted-dataset coverage, a completed model comparison, or final M2 representation selection.
 
-
-This document describes WARDIQ's CLIP image-embedding extraction component, implemented in `src/wardiq/representation/clip\_embeddings.py`.
-
-
-
-\*\*Status: prototype implemented; full M2 acceptance is not established.\*\*
-
-
-
-The current prototype produces normalized CLIP image embeddings and an item inventory. It does not establish full accepted-dataset coverage, a completed model comparison, or final M2 representation integration.
-
-
-
-\## Environment setup
-
-
-
-Run commands from the repository root with a supported Python environment.
-
-
-
-Install the project's ML dependencies:
-
-
-
-```powershell
-
-python -m pip install -e ".\[ml]"
-
-```
-
-
-
-For development and testing, install the relevant additional dependencies:
-
-
-
-```powershell
-
-python -m pip install -e ".\[dev,data,ml]"
-
-```
-
-
-
-The project declares Python 3.10 or newer. Use the dependency constraints in `pyproject.toml` rather than relying on versions installed in an individual environment.
-
-
-
-\## Implementation
-
-
+## Implementation
 
 The extraction module provides:
 
+- `load_usable_manifest()` — loads and validates the input manifest, filters usable derivatives, checks item identifiers, and resolves image paths.
+- `normalize_embeddings()` — validates and normalizes embedding vectors.
+- `validate_embedding_artifact()` — checks expected embedding artifact properties.
+- `extract_clip_embeddings()` — extracts CLIP image embeddings and writes prototype artifacts.
 
+The model identifier is `openai/clip-vit-base-patch32`.
 
-\- `load\_usable\_manifest()` — loads the manifest, validates required columns, filters usable derivatives, checks item IDs, and resolves image paths.
-
-\- `normalize\_embeddings()` — validates and normalizes embedding vectors.
-
-\- `validate\_embedding\_artifact()` — checks the embedding artifact's expected properties.
-
-\- `extract\_clip\_embeddings()` — extracts image embeddings and saves the prototype artifacts.
-
-
-
-The model identifier is `openai/clip-vit-base-patch32`. The expected embedding dimension is 512, the output dtype is `float32`, and vectors are L2-normalized.
-
-
-
-The current code does not pin `CLIP\_MODEL\_REVISION`. Metadata records a revision only when one is supplied or resolved from the loaded model configuration. Reproducible comparisons should record and pin the exact model revision.
-
-
-
-\## Prototype artifacts
-
-
-
-The verified prototype output directory is:
-
-
-
-`artifacts/m2/clip\_embeddings\_prototype/`
-
-
-
-It contains:
-
-
-
-| File | Purpose |
-
+| Property | Value |
 |---|---|
+| Model revision | `3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268` |
+| Embedding dimension | 512 |
+| Output dtype | `float32` |
+| Normalization | L2-normalized |
+| Processor image size | 224 |
+| Execution device | CPU |
 
-| `clip\_embeddings.npy` | Numerical embedding matrix |
+The model revision is pinned in the implementation. Metadata records the model revision, input manifest path and hash, Git commit, item count, and output filenames to support reproducibility.
 
-| `clip\_inventory.csv` | Item metadata and embedding-row mapping |
+## Environment and reproduction
 
-| `metadata.json` | Model and extraction metadata |
+Run the commands from the repository root using a Python environment with the required ML dependencies installed.
 
+The project dependency declarations should be used to configure the environment. The successful prototype run used Python 3.14, PyTorch 2.14.1+cpu, Transformers 5.19.0, and Pillow 12.3.0.
 
+The extraction entry point is:
 
-The output directory is generated locally and is not intended to be committed to Git.
+`scripts/m2/run_clip_embeddings.py`
 
-
-
-The prototype metadata records:
-
-
-
-\- Model identifier and embedding version
-
-\- Embedding dimension, dtype, and normalization status
-
-\- Image size and execution device
-
-\- Model revision information, when available
-
-\- Item count, source manifest, and output filenames
-
-\- A `prototype\_only` flag
-
-
-
-\## Verified prototype results
-
-
-
-The inspected prototype contains 23 items:
-
-
-
-| Dataset | Split | Items |
-
-|---|---|---:|
-
-| Fashion-MNIST | train | 5 |
-
-| Fashionpedia | validation | 13 |
-
-| Polyvore Outfits | disjoint/validation | 5 |
-
-| \*\*Total\*\* | | \*\*23\*\* |
-
-
-
-Local checks confirmed 23 inventory rows, 23 unique item IDs, sequential embedding-row indices from 0 through 22, and the existence of the source manifest referenced in the metadata.
-
-
-
-The local test command is:
-
-
+The following PowerShell commands reproduce the prototype invocation in the environment used for verification:
 
 ```powershell
+$env:PYTHONPATH = Join-Path (Get-Location).Path "src"
 
-python -m pytest tests/test\_clip\_embeddings.py -v
-
+& "C:\Users\omara\AppData\Local\Programs\Python\Python314\python.exe" scripts\m2\run_clip_embeddings.py --batch-size 4
 ```
 
+This invocation uses the repository's `data/manifests/garment_manifest.csv` input and writes to `artifacts/m2/clip_embeddings_prototype/`.
 
+The absolute Python path above is specific to the verification machine. Other environments should use their configured Python executable.
 
-The latest recorded result was six passing tests. These tests cover embedding normalization and validation, manifest filtering and path resolution, and missing-image handling. They do not constitute a full end-to-end extraction test.
+## Prototype artifacts
 
+The verified output directory is:
 
+`artifacts/m2/clip_embeddings_prototype/`
 
-\## Reproduction status and limitation
+| File | Purpose |
+|---|---|
+| `clip_embeddings.npy` | Numerical embedding matrix |
+| `clip_inventory.csv` | Item metadata and embedding-row mapping |
+| `metadata.json` | Model and extraction metadata |
 
+The generated output directory is local and is not intended to be committed to Git.
 
+## Verified prototype results
 
-The extraction function currently exists as a Python API; no CLIP-specific command-line entry point or documented invocation was found in the inspected repository files.
+The successful extraction reported:
 
+| Metric | Result |
+|---|---:|
+| Items processed | 23 |
+| Embedding shape | `(23, 512)` |
+| Embedding dtype | `float32` |
+| Execution device | CPU |
 
+The prototype item population is:
 
-The prototype was generated using the repository's local M1 garment manifest. Its 23-item output is not evidence that the complete accepted M1 population has been embedded.
+| Dataset | Split | Items |
+|---|---|---:|
+| Fashion-MNIST | Train smoke test | 5 |
+| Fashionpedia | Validation | 13 |
+| Polyvore Outfits | Validation | 5 |
+| **Total** | | **23** |
 
+The metadata identifies the source manifest as `data/manifests/garment_manifest.csv` and records its SHA-256:
 
+`b6e1899566fb7a1b302c1ceb6dbf001e4a09b24f9e8ea020de4aacea878c4466`
 
-Before claiming reproducible full-scale extraction, the team must document and verify:
+It also records the model revision, embedding version, normalization, output filenames, and Git commit associated with the run.
 
+The output files were confirmed to exist locally. The extraction completed without a reported error.
 
+## Tests
 
-1\. The canonical input manifest and its expected item population.
+The following test command was run:
 
-2\. The exact invocation, including output directory and batch size.
+```powershell
+& "C:\Users\omara\AppData\Local\Programs\Python\Python314\python.exe" -m pytest tests\test_clip_embeddings.py -q
+```
 
-3\. The pinned model revision and relevant environment versions.
+**Result: 9 passed.**
 
-4\. The expected item count, embedding shape, and inventory schema.
+These tests cover the component's tested validation, normalization, manifest-handling, and path-handling behavior. Passing unit tests do not by themselves prove full-scale extraction correctness or accepted-population coverage.
 
-5\. That every inventory row maps to the correct embedding row and accepted M1 item.
+## Limitations and reproducibility requirements
 
-6\. The documented exclusions and dataset/split provenance.
+The 23-item output is a prototype, not evidence that the entire accepted M1 population has been embedded.
 
+Before claiming full-scale reproducible extraction, the team must verify:
 
+1. The canonical input manifest and approved item population.
+2. The intended inclusion and exclusion rules for each source dataset.
+3. The model revision, preprocessing configuration, and environment requirements.
+4. The expected item count, embedding shape, and inventory schema.
+5. The correspondence between every inventory row and its embedding row.
+6. The dataset and split provenance of every included item.
+7. That the evaluation population and test-set isolation rules remain intact.
 
-Generated embeddings and other caches should remain outside version control.
+The Fashion-MNIST rows are a train-split smoke test; the Fashionpedia and Polyvore rows are validation examples. Their presence in one prototype artifact does not authorize training or evaluation across those sources without an approved split and evaluation protocol.
 
+Generated embeddings and cache files should remain outside version control unless the team explicitly decides otherwise.
 
+## Remaining M2 work
 
-\## Remaining M2 work
+The following items are not established as complete by this prototype:
 
+- Full accepted-population extraction and inventory reconciliation.
+- Confirmation of the final approved evaluation population and split policy.
+- Fair comparison of candidate representations using agreed metrics and eligible examples.
+- End-to-end validation of saved artifacts against the accepted item inventory.
+- Final representation selection and integration.
+- Agreement on the cache and schema contract with the relevant M2 owners.
 
+The successful run establishes that the current prototype can generate and save CLIP embeddings for 23 items. It should not be treated as proof that all M2 acceptance criteria have been met.
 
-The following work is not established as complete by the prototype:
+## Retrieval diagnostic
 
+A small nearest-neighbor diagnostic was run on the 18 available real-garment
+embeddings, returning three eligible neighbors per query. The results and
+limitations are documented in
+[`clip_retrieval_diagnostic.md`](clip_retrieval_diagnostic.md).
 
-
-\- Full accepted-population embedding extraction and inventory reconciliation.
-
-\- A pinned model revision and reproducible experiment configuration.
-
-\- End-to-end tests covering extraction and saved-artifact consistency.
-
-\- Documented CLIP experiments and comparison results using approved splits and metrics.
-
-\- Final representation integration and agreement on the cache/schema contract with the relevant M2 owners.
-
-
-
-The 23-item prototype demonstrates that the core extraction and normalization path works on the tested samples. It should not be treated as proof that all M2 acceptance criteria have been met.
-
+The diagnostic verifies that cosine-similarity retrieval runs, but it does
+not validate retrieval quality or establish that CLIP is the final
+representation choice.
