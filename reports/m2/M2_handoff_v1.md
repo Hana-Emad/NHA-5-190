@@ -114,16 +114,31 @@ Actual threshold values are pending training data and model predictions.
 
 ## Reproduction
 
+Run these commands from the repository root using the project's configured Python environment:
+
 ```powershell
+python scripts/tasks.py attributes
+python scripts/tasks.py garments
+python scripts/tasks.py colors
+python -m pytest tests/test_color_extraction.py -q
+python scripts/tasks.py lint
+```
 
-python scripts\\m2\\build_attribute_targets.py
+Generated outputs are written under the local `artifacts/` directory and may be ignored by Git.
 
-python scripts\\m2\\validate_attribute_targets.py
+## Latest Local Validation — 2026-10-14
 
-python reports\\m2\\build_supported_attribute_coverage.py
+- Attribute handoff: PASS for the validation-only contract; model training remains blocked.
+- Garment preparation: PASS for the current sample; 15 source images were written and the fallback bounding-box self-test passed.
+- Color extraction: PASS for the current sample; 56 input rows, 18 successful extractions, 38 exclusions, and zero failures.
+- Color extraction tests: PASS.
+- Remaining available tests: PASS when excluding the two test files requiring `torchvision`.
+- Lint: PASS.
+- Full test suite: PASS (118 passed) in the current Python 3.14 environment because `torchvision` is missing.
+- Type checking: not verified because `mypy` is unavailable.
 
-python reports\\m2\\build_attribute_support.py
+## Remaining Limitations
 
-python reports\\m2\\build_sample_prediction.py
+M2 remains PARTIALLY COMPLETE. These sample checks do not establish full-dataset coverage or final model quality. Full-population CLIP embedding extraction, validated real-garment category classification, trained attribute prediction, and final cache integration remain incomplete or blocked by documented dependencies and data limitations.
 
-python configs\\m2\\build_model_inference_config.py
+The exploratory CLIP results and Fashion-MNIST ResNet results use different evaluation settings and must not be presented as a fair head-to-head comparison or as validated real-garment performance.
