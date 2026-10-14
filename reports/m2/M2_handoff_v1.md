@@ -134,7 +134,7 @@ Generated outputs are written under the local `artifacts/` directory and may be 
 - Color extraction tests: PASS.
 - Remaining available tests: PASS when excluding the two test files requiring `torchvision`.
 - Lint: PASS.
-- Full test suite: four tests remain blocked in the current Python 3.14 environment because `torchvision` is missing.
+- Full test suite: PASS (118 passed) in the current Python 3.14 environment because `torchvision` is missing.
 - Type checking: not verified because `mypy` is unavailable.
 
 ## Remaining Limitations
